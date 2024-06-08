@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    image: bilal326/nginx-backend:latest
+    build: ./backend
+    environment:
+      - DB_USERNAME=your_db_username
+      - DB_PASSWORD=your_db_password
+      - DB_HOST=your_rds_endpoint
+      - DB_NAME=your_db_name
+    ports:
+      - "4000:4000"
+    deploy:
+      placement:
+        constraints: [node.hostname == <BACKEND-WORKER-NODE-HOSTNAME>]
+
+  frontend:
+    image: bilal326/nginx-frontend:latest
+    build: ./frontend
+    ports:
+      - "81:80"
+    deploy:
+      placement:
+        constraints: [node.hostname == <FRONTEND-WORKER-NODE-HOSTNAME>]
